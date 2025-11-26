@@ -1,0 +1,8 @@
+from d2l import torch as d2l
+
+train_set, test_set = d2l.load_data_fashion_mnist(3)
+it = iter(train_set)
+x, y = next(it)
+print(x.shape)
+
+

@@ -1,0 +1,63 @@
+这里写点笔记类的东西
+
+随机过程: 研究随时间演变的随机现象; 随机现象是状态的变化过程
+P(St+1|S1...St)
+
+马尔可夫性质: 当且仅当某时刻的状态只取决于上一个时刻的状态时, 一个随机过程被称为具有马尔可夫性质 
+P(St+1|St) = P(St+1|S1...St)
+
+马尔可夫过程/马尔可夫链: 具有马尔可夫性质的随机过程
+S={s1,s2,...,sn} 表示所有状态
+P是状态转移矩阵, 第i行第j列为P(sj|si), 表示从状态si转为状态sj的概率, 状态转移矩阵每一行和为1
+终止状态(terminal state): 不会转移到其他状态的状态
+
+采样: 从某个状态出发, 根据状态转移矩阵生产一个状态的序列
+
+马尔可夫奖励过程(Markov reward process): <S, P, r, gamma>
+r: 奖励函数, r(s)指转移到状态s可以获得的奖励的期望
+gamma: 折扣因子(discount factor), 取值[0,1)
+回报(return): Gt = Rt + gamma*Rt+1 + gamma^2*Rt+2 + ...
+
+价值(value): 一个状态的期望回报
+价值函数(value function): 所有状态的价值 V(s)=E[Gt|St=s]=E[Rt+gamma*V(St+1)|St=s]=r(s)+gamma(epsilon:p(s'|s)V(s'))
+贝尔曼方程(Bellman equation): V(s)=r(s)+gamma(epsilon:p(s'|s)V(s'))
+
+一堆矩阵计算
+
+马尔可夫决策过程(Markov decision process, MDP): <S, A, P, r, gamma>
+A: 动作的集合
+r(s,a): 奖励函数, 同时取决于状态s和动作a
+P(s'|s,a): 状态转移函数, 表示在状态s执行动作a之后到达状态s'的概率
+
+策略(Policy): pi(a|s)=P(At=a|St=s)
+确定性策略: 
+随机性策略:
+
+状态价值函数Vpi(s)=Epi[Gt|St=s]
+动作价值函数Qpi(s,a)=Epi[Gt|St=s,At=a]
+Vpi(s)=epsilon(pi(a|s)*Qpi(s,a))
+Qpi(s,a)=r(s,a)+gamma*epsilon(P(s'|s,a)*Vpi(s'))
+
+贝尔曼期望方程(Bellman Expectation Equation):嵌套的Vpi和Qpi, 直接把两个式子一直套就行
+
+
+蒙特卡洛方法(Monte-Carlo methods): 随即撒点采样估算
+Vpi(s)=Epi[Gt|St=s]约等于1\N*epsilon(Gt)
+
+占用度量
+MDP的初始状态分布v0(s)
+Ptpi(s): 采取策略pi使得智能体在t时刻状态为s的概率, P0pi(s)=v0(s)
+状态访问分布(state visitation distribution): vpi(s)=(1-gamma)epsilon(gamma^t*Ptpi(s)) 状态被访问的概率
+状态访问概率性质: vpi(s')=(1-gamma)v0(s')+gamma*I(P(s'|s,a)*pi(a|s)*vpi(s)*ds*da) ????????????????
+占用度量(occupancy measure): rhopi(s,a)=(1-gamma)sigma(gamma^t*Ptpi(s)pi(a|s)) 动作状态(s, a)被访问的概率
+rhopi(s,a)=vpi(s)*pi(a|s)
+
+给定一个合法占用度量rho, 可生成该占用度量的唯一策略是pirho=rho(s, a) / epsilon(rho(s, a'))
+
+最优策略(optimal policy): 在有限状态和动作集合的MDP中, 至少存在一个策略比其他所有策略都好或者至少存在一个策略不差于其他所以策略
+最优状态价值函数: 最优策略都有的相同的状态价值函数 V*(s)=maxVpi(s)
+最优动作价值函数: Q*(s,a)=maxQpi(s,a)
+Q*(s,a)=r(s,a)+gamma(epsilon(P(s'|s,a)V*(s')))
+最优状态价值: 选择此时最优动作价值最大的那个动作的状态价值
+
+贝尔曼方程最优方程
