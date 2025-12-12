@@ -1,3 +1,4 @@
+#copied from https://zhuanlan.zhihu.com/p/75589452
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import minimize
