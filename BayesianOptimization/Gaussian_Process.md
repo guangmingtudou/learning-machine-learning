@@ -1,5 +1,7 @@
 # Gaussian Process
 learning from https://borgwang.github.io/ml/2019/07/28/gaussian-processes.html
+
+<font color='red'>Note</font>: To be honest, due to my weak understanding in Possibility, I can not really understand all the concepts, and it's hard to justify which concept is right since I've seen some different definitions on Gaussian Process. After a systematic learning in machine learning, I'll come back to fix some of the problems.
 ## Univarient Gaussian Distribution
 It is also known as normal distribution
 $p(x) = \frac{1}{\sigma\sqrt{2\pi}}exp(-\frac{(x-\mu)^2}{2\sigma^2})$
