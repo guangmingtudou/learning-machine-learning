@@ -81,6 +81,7 @@ if __name__ == "__main__":
     '''
 
     mu, sigma = MultivarientGaussianDistribution.generate_mu_sigma(2)
+    sigma = np.array([0.4, 0.5])
     mvgd = MultivarientGaussianDistribution(mu, sigma)
     x, y = mvgd.sampling(100)
     plot_3d(x, y)

@@ -1,6 +1,4 @@
 # Gaussian Process
-learning from https://borgwang.github.io/ml/2019/07/28/gaussian-processes.html
-
 <font color='red'>Note</font>: To be honest, due to my weak understanding in Possibility, I can not really understand all the concepts, and it's hard to justify which concept is right since I've seen some different definitions on Gaussian Process. After a systematic learning in machine learning, I'll come back to fix some of the problems.
 ## Univarient Gaussian Distribution
 It is also known as normal distribution
@@ -36,7 +34,7 @@ Using these equations, we get $p(x_1, x_2, ..., x_n) = \frac{1}{(2\pi)^{\frac{n}
 logogram: x ~ N($\boldsymbol{\mu}$, $\Sigma$)
 
 It still works if $X_1, X_2, ..., X_n$ are not independent, then
-$$ K = 
+$$ \Sigma = 
 \begin{bmatrix}
 \sigma_1^2&\sigma_{12}&...&\sigma_{1n}\\
 \sigma_{21}&\sigma_2^2&...&\sigma_{2n}\\
@@ -50,15 +48,17 @@ the matrix is Diagonally symmetric.
 
 ## Infinite Dimensional Gaussian Distribution
 
-Consider about 1-dimensional, 2-dimensional and multidimensional gaussian process
+Consider a multidimensional gaussian distribution with infinite variabless.
 
 ## Marginalization and conditioning 边缘概率与条件概率
-These are two useful tools when trying to understand Gaussian Process.</br>
-For $P_{X,Y}=$
-
+These are two useful tools when trying to understand Gaussian Process.</br></br>
+For $P_{X,Y}=\begin{bmatrix} X \\ Y \\\end{bmatrix}
+$ ~ $N(\mu, \Sigma)=N(\begin{bmatrix} \mu_X \\ \mu_Y \\\end{bmatrix},\begin{bmatrix} \Sigma_{XX}\ \Sigma_{XY} \\ \Sigma_{YX}\ \Sigma_{YY} \\\end{bmatrix})$, where X and Y representing subsets of original random variables, with the properties $X$ ~ $N(\mu_X,\Sigma_{XX})$, $Y$ ~ $N(\mu_Y,\Sigma_{YY})$, which means that X and Y only depends on its own $\boldsymbol{\mu}$ and $\Sigma$</br></br>
+**Marginalization**: $p_X(x) = \int_yp_{X,Y}(x,y)dy=\int_yp_{X|Y}(x|y)p_Y(y)dy$ due to Bayesian's equation.</br></br>
+**Conditioning**: $X|Y$ ~ $N(\boldsymbol{\mu}_X+\Sigma_{XY}\Sigma_{YY}^{-1}(Y-\boldsymbol{\mu}_Y), \Sigma_{XX}-\Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX})$ detailed explanation is not given, since I have little understanding of that right now
 
 ## Gaussian Process
-for $\textbf{x} = [x_1, x_2, ..., x_n]^T$, if $f(\textbf{x}) = [f(x_1), f(x_2), ..., f(x_n)]^T$ all obey Gaussian Distribution, then $f$ is a Gaussian Process.
+**Definition**:  a Gaussian process is a collection of random variables, any finite number of which have (consistent) Gaussian distributions.
 
 logogram: $f(\textbf{x})$ ~ $N(\boldsymbol{\mu}(\textbf{x}), \kappa(\textbf{x},\textbf{x}))$
 
@@ -76,14 +76,28 @@ a Gaussian Process is distinctively defined by one mean function and one covaria
 
 先验分布x, f(x), 观测数据x*, y* 
 ### Kernel Function
-one typical kernel function is the Gaussian Kernel Function:
-$K(x_i, x_j) = \sigma^2exp(-\frac{\Vert x_i-x_j\Vert_2^2 }{2l^2})$, 
-where $\sigma$ and $l$ are hyperparameters.
+Some typical kernel functions:</br>
+1. Radical Basis Function: $K(x_i, x_j) = \sigma^2exp(-\frac{\Vert x_i-x_j\Vert_2^2 }{2l^2})$
+2. Periodic Function: $K(x_i, x_j) = \sigma^2exp(-\frac{2sin^2(\pi|x_i-x_j|/p)}{l^2})$
+3. Linear Function: $K(x_i, x_j) = \sigma^2_{b}+\sigma^2(x_i-c)(x_j-c)$
+   
+The things other than $x_i$ and $x_j$ are hyperparameters, like $\sigma, l, \sigma_b$ and $c$.</br></br>
+The kernel functions can be roughly divided into stationary kernels and non-stationary kernels. For stationary ones, $K$ only relates to the relative position of $x_i$ and $x_j$, and non-stationary ones depend on the absolute location.
+| stationary kernel | non-stationary kernel |
+|---|---|
+|RBF|Linear Function|
+|Periodic Functoin||
 
-To find the best $\sigma$ and $l$, we can maximize the **Marginal Log-Likelihood**, which is give as $\log p(\boldsymbol{y}|\sigma,l)=\log\boldsymbol{N}(\boldsymbol{0},K_{yy}(\sigma, l))=-\frac{1}{2}\boldsymbol{y}^TK_{yy}^{-1}\boldsymbol{y}-\frac{1}{2}\log|K_{yy}|-\frac{N}{2}\log(2\pi)$
+### How to predict
+1. we get the prior distribution.
+2. from the prior distribution, we get the conditional probability of each point.
+
+### Optimization
+To find the best $\sigma$ and $l$ for RBF, we can maximize the **Marginal Log-Likelihood**, which is give as $\log p(\boldsymbol{y}|\sigma,l)=\log\boldsymbol{N}(\boldsymbol{0},K_{yy}(\sigma, l))=-\frac{1}{2}\boldsymbol{y}^TK_{yy}^{-1}\boldsymbol{y}-\frac{1}{2}\log|K_{yy}|-\frac{N}{2}\log(2\pi)$
 
 ## Reference
 https://distill.pub/2019/visual-exploration-gaussian-processes/</br>
 https://zhuanlan.zhihu.com/p/349600542</br>
 https://zhuanlan.zhihu.com/p/75589452</br>
 https://blog.csdn.net/shizheng_Li/article/details/144154902</br>
+https://mlg.eng.cam.ac.uk/teaching/4f13/2425/gp.pdf</br>
